@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import os
 import requests
+from io import BytesIO
 from PIL import Image
 import numpy as np
 import tensorflow as tf
@@ -67,7 +68,9 @@ def main():
         # Display the top similar images and their labels
         st.subheader("Top Similar Images")
         for i in range(len(top_images)):
-            st.image(top_images[i], use_column_width=True)
+            response = requests.get(top_images[i])
+            image = Image.open(BytesIO(response.content))
+            st.image(image, use_column_width=True)
 
 if __name__ == '__main__':
     main()
