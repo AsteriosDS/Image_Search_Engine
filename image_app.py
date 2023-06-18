@@ -56,11 +56,9 @@ def main():
     st.title("Image Search Engine")
 
     # Upload image
-    uploaded_image = st.file_uploader("Upload an image", type=['jpg', 'jpeg', 'png'])
+    uploaded_image = st.file_uploader("Upload an image", type=['jpeg'])
 
     if uploaded_image is not None:
-        response = requests.get(url)
-        image = Image.open(BytesIO(response.content))
         st.image(image, caption='Uploaded Image', use_column_width=True)
 
         # Preprocess the image
