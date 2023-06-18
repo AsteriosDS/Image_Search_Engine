@@ -45,7 +45,7 @@ def perform_image_search(query_image):
     top_indices = np.argsort(similarities.flatten())[::-1][:5]
 
     # Get the URLs of the top similar images
-    top_urls = links.iloc[top_indices].values
+    top_urls = links.iloc[top_indices]['link'].tolist()
 
     return top_urls
 
