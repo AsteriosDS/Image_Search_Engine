@@ -67,10 +67,14 @@ def main():
 
         # Display the top similar images and their labels
         st.subheader("Top Similar Images")
-        for i in range(len(top_images)):
+        cols = st.beta_columns(len(top_images))
+        # for i in range(len(top_images)):
+        for i, col in enumerate(cols):
             response = requests.get(top_images[i])
             image = Image.open(BytesIO(response.content))
-            st.image(image, use_column_width=False, width=300)
+            col.image(image, use_column_width=True)
+            # st.image(image, use_column_width=False, width=300)
+            
 
 if __name__ == '__main__':
     main()
