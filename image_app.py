@@ -70,7 +70,7 @@ def main():
         for i in range(len(top_images)):
             response = requests.get(top_images[i])
             image = Image.open(BytesIO(response.content))
-            st.image(image, use_column_width=True)
+            st.image(image, use_column_width=False, width=300)
 
 if __name__ == '__main__':
     main()
