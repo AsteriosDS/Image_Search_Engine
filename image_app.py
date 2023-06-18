@@ -25,8 +25,8 @@ with open(path + '/encoder.json', 'r') as json_file:
 #load the model architecture 
 encoder = tf.keras.models.model_from_json(json_savedModel)
 
-# Upload an image file
-url = st.file_uploader("Paste the link of a jpeg", type="jpeg")
+# # Upload an image file
+# url = st.file_uploader("Paste the link of a jpeg", type="jpeg")
 
 # Function to preprocess the uploaded image
 def preprocess_image(image):
