@@ -56,7 +56,7 @@ def main():
     st.title("Image Search Engine")
 
     # Upload image
-    uploaded_image = st.file_uploader("Upload an image", type=['jpeg'])
+    image = st.file_uploader("Upload an image", type=['jpeg'])
 
     if uploaded_image is not None:
         st.image(image, caption='Uploaded Image', use_column_width=True)
