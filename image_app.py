@@ -52,8 +52,8 @@ def perform_image_search(query_image):
 # Streamlit app
 def main():
     st.title("Image Search Engine")
-    st.header("Image Similarity Search Engine (Encoder + Cosine Similarity)")
-    st.subheader("Input --> Images of small tables or ovens")
+    st.header("Encoder + Cosine Similarity")
+    st.subheader("Input --> Images of small tables or sofas")
     # Upload image
     image = st.file_uploader("Upload an image", type=['jpeg'])
 
