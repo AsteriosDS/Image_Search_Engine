@@ -67,7 +67,7 @@ def main():
 
         # Display the top similar images and their labels
         st.subheader("Top Similar Images")
-        cols = st.beta_columns(len(top_images))
+        cols = st.columns(len(top_images))
         # for i in range(len(top_images)):
         for i, col in enumerate(cols):
             response = requests.get(top_images[i])
