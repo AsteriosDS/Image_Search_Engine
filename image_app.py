@@ -58,7 +58,7 @@ def main():
     # Upload image
     image = st.file_uploader("Upload an image", type=['jpeg'])
 
-    if uploaded_image is not None:
+    if image is not None:
         st.image(image, caption='Uploaded Image', use_column_width=True)
 
         # Preprocess the image
