@@ -5,7 +5,6 @@ import os
 import requests
 from PIL import Image
 import numpy as np
-from io import BytesIO
 import tensorflow as tf
 from keras.models import model_from_json
 from keras.initializers import glorot_uniform
@@ -24,9 +23,6 @@ with open(path + '/encoder.json', 'r') as json_file:
     
 #load the model architecture 
 encoder = tf.keras.models.model_from_json(json_savedModel)
-
-# # Upload an image file
-# url = st.file_uploader("Paste the link of a jpeg", type="jpeg")
 
 # Function to preprocess the uploaded image
 def preprocess_image(image):
@@ -59,7 +55,7 @@ def main():
     image = st.file_uploader("Upload an image", type=['jpeg'])
 
     if image is not None:
-        st.image(image, caption='Uploaded Image', use_column_width=True)
+        st.image(image, use_column_width=True)
 
         # Preprocess the image
         processed_image = preprocess_image(image)
