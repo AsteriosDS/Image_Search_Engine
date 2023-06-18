@@ -69,7 +69,6 @@ def main():
         st.subheader("Top Similar Images")
         for i in range(len(top_images)):
             response = requests.get(top_images[i])
-            st.text(print(response.status_code))
             image = Image.open(BytesIO(response.content))
             st.image(image, use_column_width=True)
 
