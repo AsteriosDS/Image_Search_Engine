@@ -1,5 +1,6 @@
-import streamlit as st
+timport streamlit as st
 import numpy as np
+import pandas as pd
 import os
 import requests
 from PIL import Image
