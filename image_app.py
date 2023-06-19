@@ -25,11 +25,8 @@ with open(path + '/encoder.json', 'r') as json_file:
 # Define the input shape for the encoder
 input_shape = (128, 128, 1)
 
-# #load the model architecture 
-# encoder = tf.keras.models.model_from_json(json_savedModel)
-
-# Load the model architecture and set the input shape
-encoder = model_from_json(json_savedModel)
+#load the model architecture 
+encoder = tf.keras.models.model_from_json(json_savedModel)
 encoder.build(input_shape)
 
 # Function to preprocess the uploaded image
