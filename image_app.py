@@ -28,9 +28,11 @@ encoder = tf.keras.models.model_from_json(json_savedModel)
 # Function to preprocess the uploaded image
 def preprocess_image(image):
     image = Image.open(image)
+    image = Image.open(image).convert('L')  # Convert image to grayscale
     image = image.resize((128, 128))  # Resize the image to match the input size of the model
     image = np.array(image)  # Convert the image to a NumPy array
     image = image / 255.0  # Normalize the image
+    image = np.expand_dims(image, axis=-1)  # Add an extra dimension to represent the channel
     image = np.expand_dims(image, axis=0)  # Add an extra dimension to represent the batch
     return image
 
