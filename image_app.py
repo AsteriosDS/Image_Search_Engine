@@ -29,7 +29,7 @@ input_shape = (128, 128, 1)
 # encoder = tf.keras.models.model_from_json(json_savedModel)
 
 # Load the model architecture and set the input shape
-encoder = model_from_json(json_savedModel, custom_objects={"GlorotUniform": glorot_uniform()},)
+encoder = model_from_json(json_savedModel)
 encoder.build(input_shape)
 
 # Function to preprocess the uploaded image
