@@ -21,9 +21,16 @@ links = pd.read_csv(path + '/links.csv')
 #Reading the encoder from JSON file
 with open(path + '/encoder.json', 'r') as json_file:
     json_savedModel= json_file.read()
-    
-#load the model architecture 
-encoder = tf.keras.models.model_from_json(json_savedModel)
+
+# Define the input shape for the encoder
+input_shape = (128, 128, 1)
+
+# #load the model architecture 
+# encoder = tf.keras.models.model_from_json(json_savedModel)
+
+# Load the model architecture and set the input shape
+encoder = model_from_json(json_savedModel, custom_objects={"GlorotUniform": glorot_uniform()},)
+encoder.build(input_shape)
 
 # Function to preprocess the uploaded image
 def preprocess_image(image):
