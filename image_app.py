@@ -86,9 +86,8 @@ def main():
         top_images = perform_image_search(processed_image)
 
         # Display the top similar images and their labels
-        st.subheader("Image Classification")
-        st.text(f"The input image was classified as {max_key}")
-        st.subheader(f"Top Similar Images for {max_key}")
+        st.subheader(f"Image Classification: {max_key}")
+        st.subheader(f"Top Similar Images")
         cols = st.columns(len(top_images))
         # for i in range(len(top_images)):
         for i, col in enumerate(cols):
