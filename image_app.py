@@ -31,9 +31,8 @@ new_model.build((None,128,128,3))
 new_model.load_weights(path + '/furn_weights.h5', by_name=True)
 
 # Function to preprocess the uploaded image
-def preprocess_image(link):
-    response = requests.get(link)
-    image = Image.open(BytesIO(response.content))
+def preprocess_image(uploaded_file):
+    image = Image.open(uploaded_file)
     image = image.resize((128, 128))  # Resize the image to match the input size of the model
     image = np.array(image)  # Convert the image to a NumPy array
     image = np.expand_dims(image, axis=0)  # Add an extra dimension to represent the batch
