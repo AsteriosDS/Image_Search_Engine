@@ -7,57 +7,68 @@ from io import BytesIO
 from PIL import Image
 import numpy as np
 import tensorflow as tf
-from keras.models import model_from_json
-from keras.initializers import glorot_uniform
+from tensorflow.keras.models import load_model
 from sklearn.metrics.pairwise import cosine_similarity
 
 # path
 path = os.path.dirname(__file__)
 
-# load all_embeddings, links
-all_embeddings = np.load(path + '/all_embeddings.npy')
-links = pd.read_csv(path + '/links.csv')
+# load feature vectors
+data = np.load('all_vecs.npz')
+all_vecs = data['a']
+all_vecs = all_vecs.reshape(len(all_vecs), -1)
 
-#Reading the encoder from JSON file
-with open(path + '/encoder.json', 'r') as json_file:
-    json_savedModel= json_file.read()
+# load furniture dataset with links
+furns = pd.read_csv(path + '/furns.csv')
 
-# Define the input shape for the encoder
-input_shape = (128, 128, 1)
+# load full model and model for similarity search
+model = load_model(path + "/furn.h5")
 
-#load the model architecture 
-encoder = tf.keras.models.model_from_json(json_savedModel)
-encoder.build(input_shape)
+loaded_model = load_model(path + "/furn.h5",compile=False)
+layers_to_load = loaded_model.layers[:-3]
+new_model = tf.keras.models.Sequential(layers_to_load)
+new_model.build((None,128,128,3))
+new_model.load_weights(path + '/furn_weights.h5', by_name=True)
 
 # Function to preprocess the uploaded image
-def preprocess_image(image):
-    image = Image.open(image).convert('L')  # Convert image to grayscale
+def preprocess_image(link):
+    response = requests.get(link)
+    image = Image.open(BytesIO(response.content))
     image = image.resize((128, 128))  # Resize the image to match the input size of the model
     image = np.array(image)  # Convert the image to a NumPy array
-    image = image / 255.0  # Normalize the image
-    image = np.expand_dims(image, axis=-1)  # Add an extra dimension to represent the channel
     image = np.expand_dims(image, axis=0)  # Add an extra dimension to represent the batch
     return image
-
+    
+# Function to classify the image
+def classify(x):
+    d = {}
+    pred = model.predict(x)
+    if pred[0] > pred[1]:
+        d['small_table'] = 1
+        d['sofa'] = 0
+    else:
+        d['small_table'] = 0
+        d['sofa'] = 1
+    return d
+    
 # Function to perform image search
 def perform_image_search(query_image):
-    query_embedding = encoder.predict(query_image)  # Get the embedding of the query image
+    query_embedding = new_model.predict(query_image)  # Get the embedding of the query image
 
     # Compute cosine similarity between query embedding and all embeddings
-    similarities = cosine_similarity(all_embeddings, query_embedding)
+    similarities = cosine_similarity(query_embedding.reshape(1,-1),all_vecs)
 
     # Get the indices of the top similar images
     top_indices = np.argsort(similarities.flatten())[::-1][:5]
 
     # Get the URLs of the top similar images
-    top_urls = links.iloc[top_indices]['link'].tolist()
+    top_urls = furns.iloc[top_indices]['product_image'].tolist()
 
     return top_urls
 
 # Streamlit app
 def main():
     st.title("Image Search Engine")
-    st.header("Encoder + Cosine Similarity")
     st.subheader("Input --> Images of small tables or sofas")
     # Upload image
     image = st.file_uploader("Upload an image", type=['jpeg'])
@@ -68,18 +79,23 @@ def main():
         # Preprocess the image
         processed_image = preprocess_image(image)
 
+        # Classify it
+        result = classify(processed_image)  
+        max_key = max(result, key=result.get)
+        
         # Perform image search
         top_images = perform_image_search(processed_image)
 
         # Display the top similar images and their labels
-        st.subheader("Top Similar Images")
+        st.subheader("Image Classification")
+        st.text(f"The input image was classified as {max_key}")
+        st.subheader(f"Top Similar Images for {max_key}")
         cols = st.columns(len(top_images))
         # for i in range(len(top_images)):
         for i, col in enumerate(cols):
             response = requests.get(top_images[i])
             image = Image.open(BytesIO(response.content))
             col.image(image, use_column_width=True)
-            # st.image(image, use_column_width=False, width=300)
             
 
 if __name__ == '__main__':
