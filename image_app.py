@@ -42,7 +42,7 @@ def preprocess_image(uploaded_file):
 def classify(x):
     d = {}
     pred = model.predict(x)
-    if pred[0] > pred[1]:
+    if pred[0][0] > pred[0][1]:
         d['small_table'] = 1
         d['sofa'] = 0
     else:
