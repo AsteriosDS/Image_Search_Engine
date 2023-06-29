@@ -1,4 +1,7 @@
 ## Image Search Engine
+---------------
+## Interactive dashboard: [click here](https://imagesearchengine.streamlit.app/)
+---------------
 ### This was built with the intent to replicate similar image search or a search by image functionality often found in various websites.
 ### 1. Approximately 50k living room furniture images scraped from the greek e-commerce website Skroutz. I ended up using close to 12k images belonging to two classes: small tables and sofas.
 ### 2. ~9k for training, the remaining split for testing and validation.
