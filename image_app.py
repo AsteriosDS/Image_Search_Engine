@@ -22,7 +22,7 @@ all_vecs = all_vecs.reshape(len(all_vecs), -1)
 furns = pd.read_csv(path + '/furns.csv')
 
 # load full model and model for similarity search
-model = load_model(path + "/furn.h5")
+model = load_model(path + "/furn.h5", compile=False)
 
 loaded_model = load_model(path + "/furn.h5",compile=False)
 layers_to_load = loaded_model.layers[:-3]
