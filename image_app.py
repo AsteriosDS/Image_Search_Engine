@@ -24,8 +24,8 @@ furns = pd.read_csv(path + '/furns.csv')
 # load full model and model for similarity search
 model = load_model(path + "/furn.h5", compile=False)
 
-loaded_model = load_model(path + "/furn.h5",compile=False)
-layers_to_load = loaded_model.layers[:-3]
+# loaded_model = load_model(path + "/furn.h5",compile=False)
+layers_to_load = model.layers[:-3]
 new_model = tf.keras.models.Sequential(layers_to_load)
 new_model.build((None,128,128,3))
 new_model.load_weights(path + '/furn_weights.h5')
