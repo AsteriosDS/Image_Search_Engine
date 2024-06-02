@@ -28,7 +28,7 @@ loaded_model = load_model(path + "/furn.h5",compile=False)
 layers_to_load = loaded_model.layers[:-3]
 new_model = tf.keras.models.Sequential(layers_to_load)
 new_model.build((None,128,128,3))
-new_model.load_weights(path + '/furn_weights.h5', by_name=True)
+new_model.load_weights(path + '/furn_weights.h5')
 
 # Function to preprocess the uploaded image
 def preprocess_image(uploaded_file):
